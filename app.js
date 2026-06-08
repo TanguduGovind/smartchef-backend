@@ -9,6 +9,8 @@ const limiter =
 
 const authRoutes =
 require("./routes/authRoutes");
+const userRoutes =
+require("./routes/userRoutes");
 
 const app = express();
 
@@ -36,6 +38,10 @@ app.use(
  authRoutes
 );
 
+app.use(
+ "/api/v1/users",
+ userRoutes
+);
 
 app.use(errorHandler);
 
