@@ -11,6 +11,8 @@ const authRoutes =
 require("./routes/authRoutes");
 const userRoutes =
 require("./routes/userRoutes");
+const uploadRoutes =
+require("./routes/uploadRoutes");
 
 const app = express();
 
@@ -41,6 +43,11 @@ app.use(
 app.use(
  "/api/v1/users",
  userRoutes
+);
+
+app.use(
+ "/api/v1/upload",
+ uploadRoutes
 );
 
 app.use(errorHandler);
