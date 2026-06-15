@@ -4,8 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const { errorHandler } = require("./middleware/errorMiddleware");
-const limiter =
-  require("./middleware/rateLimiter");
+const limiter = require("./middleware/rateLimiter");
 
 const authRoutes =
 require("./routes/authRoutes");
@@ -13,6 +12,8 @@ const userRoutes =
 require("./routes/userRoutes");
 const uploadRoutes =
 require("./routes/uploadRoutes");
+const recipeRoutes =
+require("./routes/recipeRoutes");
 
 const app = express();
 
@@ -48,6 +49,11 @@ app.use(
 app.use(
  "/api/v1/upload",
  uploadRoutes
+);
+
+app.use(
+ "/api/v1/recipes",
+ recipeRoutes
 );
 
 app.use(errorHandler);
