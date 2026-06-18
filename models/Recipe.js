@@ -62,6 +62,18 @@ const recipeSchema = new mongoose.Schema(
   }
 );
 
+recipeSchema.index({
+  title: "text",
+});
+
+recipeSchema.index({
+  "ingredients.name": 1,
+});
+
+recipeSchema.index({
+  tags: 1,
+});
+
 module.exports = mongoose.model(
   "Recipe",
   recipeSchema

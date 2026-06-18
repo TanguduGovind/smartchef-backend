@@ -231,10 +231,138 @@ const deleteRecipe = async (
   }
 };
 
+
+const searchByIngredient = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const ingredient =
+      req.query.ingredient;
+
+    if (!ingredient) {
+      res.status(400);
+      throw new Error(
+        "Ingredient is required"
+      );
+    }
+
+    const page =
+      parseInt(req.query.page) || 1;
+
+    const limit =
+      parseInt(req.query.limit) || 10;
+
+    const skip =
+      (page - 1) * limit;
+
+    const recipes =
+      await Recipe.find({
+        "ingredients.name": {
+          $regex: ingredient,
+          $options: "i",
+        },
+      })
+        .select(
+          "title image cookingTime servings createdBy"
+        )
+        .populate(
+          "createdBy",
+          "username avatar"
+        )
+        .sort({
+          createdAt: -1,
+        })
+        .skip(skip)
+        .limit(limit);
+
+    res.status(200).json({
+      success: true,
+      count: recipes.length,
+      page,
+      limit,
+      recipes,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const searchByIngredients = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const ingredients =
+      req.query.ingredients;
+
+    if (!ingredients) {
+      res.status(400);
+      throw new Error(
+        "Ingredients are required"
+      );
+    }
+
+    const ingredientArray =
+      ingredients
+        .split(",")
+        .map((item) =>
+          item.trim()
+        );
+
+    const page =
+      parseInt(req.query.page) || 1;
+
+    const limit =
+      parseInt(req.query.limit) || 10;
+
+    const skip =
+      (page - 1) * limit;
+
+    const recipes =
+      await Recipe.find({
+        $and: ingredientArray.map(
+          (ingredient) => ({
+            "ingredients.name": {
+              $regex: `^${ingredient}$`,
+              $options: "i",
+            },
+          })
+        ),
+      })
+        .select(
+          "title image cookingTime servings createdBy"
+        )
+        .populate(
+          "createdBy",
+          "username avatar"
+        )
+        .sort({
+          createdAt: -1,
+        })
+        .skip(skip)
+        .limit(limit);
+
+    res.status(200).json({
+      success: true,
+      count: recipes.length,
+      page,
+      limit,
+      recipes,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createRecipe,
   getRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  searchByIngredient,
+  searchByIngredients,
 };

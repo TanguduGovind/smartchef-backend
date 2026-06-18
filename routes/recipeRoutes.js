@@ -16,6 +16,8 @@ const {
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  searchByIngredient,
+  searchByIngredients,
 } = require(
   "../controllers/recipeController"
 );
@@ -30,7 +32,20 @@ const {
 
 router.get("/", getRecipes);
 
-router.get("/:id", getRecipeById);
+router.get(
+  "/search",
+  searchByIngredient
+);
+
+router.get(
+  "/search/multi",
+  searchByIngredients
+);
+
+router.get(
+  "/:id",
+  getRecipeById
+);
 
 router.post(
   "/",
