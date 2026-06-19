@@ -14,6 +14,8 @@ const uploadRoutes =
 require("./routes/uploadRoutes");
 const recipeRoutes =
 require("./routes/recipeRoutes");
+const pantryRoutes =
+require("./routes/pantryRoutes");
 
 const app = express();
 
@@ -54,6 +56,11 @@ app.use(
 app.use(
  "/api/v1/recipes",
  recipeRoutes
+);
+
+app.use(
+ "/api/v1/pantry",
+ pantryRoutes
 );
 
 app.use(errorHandler);
