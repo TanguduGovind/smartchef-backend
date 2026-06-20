@@ -14,20 +14,19 @@ const {
   addPantryItem,
   getPantry,
   deletePantryItem,
+  getRecipeMatches,
 } = require(
   "../controllers/pantryController"
 );
 
-router.post(
-  "/",
-  protect,
-  addPantryItem
-);
+router.post("/", protect, addPantryItem);
+
+router.get("/", protect, getPantry);
 
 router.get(
-  "/",
+  "/matches",
   protect,
-  getPantry
+  getRecipeMatches
 );
 
 router.delete(
